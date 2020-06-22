@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiabin.dao.ZycDao">
+
+	<resultMap type="Zyc" id="ZycResult">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="bieming" column="bieming"/>
+		<result property="xueming" column="xueming"/>
+		<result property="price" column="price"/>
+		<result property="press" column="press"/>
+		<result property="publishTime" column="publishTime"/>
+		<result property="keshu" column="keshu"/>
+		<result property="shape" column="shape"/>
+		<result property="yongtu" column="yongtu"/>
+		<result property="slide" column="slide"/>
+
+		<result property="pic" column="pic"/>
+		<result property="click" column="click"/>
+		<result property="stock" column="stock"/>
+		<association property="smallType" column="smallTypeId" select="com.jiabin.dao.SmallTypeDao.findById"></association>
+	</resultMap>
+	
+	<select id="findByclick" parameterType="Map" resultMap="ZycResult">
+		select * from t_zyc order by click desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="find" parameterType="Map" resultMap="ZycResult">
+		select * from t_zyc b left join t_smallType s on b.smallTypeId=s.id
+		<where>
+			<if test="name!=null and name!=''">
+				and b.name like #{name}
+			</if>
+			<if test="bieming!=null and bieming!=''">
+				and b.bieming like #{bieming}
+			</if>
+			<if test="xueming!=null and xueming!=''">
+				and b.xueming like #{xueming}
+			</if>
+			<if test="press!=null and press!=''">
+				and b.press like #{press}
+			</if>
+			<if test="smallTypeId!=null">
+				and b.smallTypeId = #{smallTypeId}
+			</if>
+			<if test="slide!=null">
+				and b.slide = #{slide}
+			</if>
+			<if test="bigTypeId!=null">
+				and s.bigTypeId = #{bigTypeId}
+			</if>
+		</where>
+		order by updateTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_zyc b left join t_smallType s on b.smallTypeId=s.id
+		<where>
+			<if test="name!=null and name!=''">
+				and b.name like #{name}
+			</if>
+			<if test="bieming!=null and bieming!=''">
+				and b.bieming like #{bieming}
+			</if>
+			<if test="xueming!=null and xueming!=''">
+				and b.xueming like #{xueming}
+			</if>
+			<if test="press!=null and press!=''">
+				and b.press like #{press}
+			</if>
+			<if test="smallTypeId!=null">
+				and b.smallTypeId = #{smallTypeId}
+			</if>
+			<if test="slide!=null">
+				and b.slide = #{slide}
+			</if>
+			<if test="bigTypeId!=null">
+				and s.bigTypeId = #{bigTypeId}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Zyc">
+		insert into t_zyc values(null,#{name},#{bieming},#{xueming},#{price},#{press},#{publishTime},#{keshu},#{shape},#{yongtu},#{smallType.id},#{slide},#{pic},now(),0,#{stock})
+	</insert>
+	
+	<update id="update" parameterType="Zyc">
+		update t_zyc
+		<set>
+			<if test="name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test="bieming!=null and bieming!=''">
+				bieming=#{bieming},
+			</if>
+			<if test="xueming!=null and xueming!=''">
+				xueming=#{xueming},
+			</if>
+			<if test="price!=null">
+				price=#{price},
+			</if>
+			<if test="press!=null and press!=''">
+				press=#{press},
+			</if>
+			<if test="publishTime!=null">
+				publishTime=#{publishTime},
+			</if>
+			<if test="keshu!=null and keshu!=''">
+				keshu=#{keshu},
+			</if>
+			<if test="shape!=null and shape!=''">
+				shape=#{shape},
+			</if>
+			<if test="yongtu!=null and yongtu!=''">
+				yongtu=#{yongtu},
+			</if>
+			<if test="smallType.id!=null">
+				smallTypeId=#{smallType.id},
+			</if>
+			<if test="slide!=null">
+				slide=#{slide},
+			</if>
+
+			<if test="price!=null">
+				price=#{price},
+			</if>
+			<if test="pic!=null and pic!=''">
+				pic=#{pic},
+			</if>
+			<if test="updateTime!=null">
+				updateTime=#{updateTime},
+			</if>
+			<if test="click!=null">
+				click=#{click},
+			</if>
+			<if test="stock!=null">
+				stock=#{stock},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		delete from t_zyc where id=#{id}
+	</delete>
+	
+	<select id="findById" parameterType="Integer" resultMap="ZycResult">
+		select * from t_zyc where id=#{id}
+	</select>
+	
+</mapper> 

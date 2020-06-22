@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiabin.dao.ShopCartDao">
+
+	<resultMap type="ShopCart" id="ShopcartResult">
+		<result property="id" column="id"/>
+		<result property="uid" column="uid"/>
+		<result property="zid" column="zid"/>
+		<result property="count" column="count"/>
+	</resultMap>
+
+	
+	<insert id="addcart11" parameterType="ShopCart">
+		insert into t_shopcart values(null,#{uid},#{zid},#{count})
+	</insert>
+	
+	<update id="update" parameterType="ShopCart">
+		update t_shopcart
+		<set>
+			<if test="uid!=null">
+				uid=#{uid},
+			</if>
+			<if test="zid!=null">
+				zid=#{zid},
+			</if>
+			<if test="count!=null">
+				count=#{count},
+			</if>
+
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		delete from t_shopcart where id=#{id}
+	</delete>
+	
+	<select id="findById11" parameterType="Integer" resultType="ShopCart">
+		select * from t_shopcart where id=#{id}
+	</select>
+
+	<select id="findByUid11" parameterType="Integer" resultType="ShopCart">
+		select * from t_shopcart where uid=#{uid}
+	</select>
+	
+</mapper> 
